@@ -1,0 +1,77 @@
+# NexusLegion -- tiny armies of small animals.
+#
+# How it works: craft a Recruitment Banner, right-click a small animal with it (it shrinks and joins
+# your army for a few gold nuggets). Craft a War Horn: right-click a player or monster to send the
+# whole army after it, right-click the air to call it back, sneak + right-click the air to switch
+# between "follow" and "hold". Soldiers also hit back automatically at anything that hurts you.
+
+recruit:
+  cost-enabled: true
+  cost-item: GOLD_NUGGET         # each soldier type below says how many
+  allow-named-mobs: false        # a name-tagged animal is probably someone's pet
+  name-format: "&e%owner%'s %type%"
+  name-visible: true
+
+army:
+  max-soldiers: 20               # per player
+  # A player with permission nexuslegion.cap.<N> gets that many instead (the highest one counts).
+  cap-tiers: [30, 40, 60]
+  global-max-soldiers: 500       # whole server, a safety limit
+
+combat:
+  tick-interval: 5               # how often (ticks) the army thinks; lower = smoother, heavier
+  attack-cooldown-ticks: 20      # time between one soldier's hits
+  reach: 1.7                     # how close a soldier must get to hit (blocks)
+  chase-range: 40.0              # an army gives up on a target further than this from its owner
+  follow-distance: 6.0           # soldiers come back to you when further than this
+  teleport-distance: 40.0        # ...and teleport to you when further than this
+  target-memory-seconds: 15      # an automatic target is forgotten after this long (a War Horn order is not)
+  auto-defend: true              # hit back at whoever hurts you, and join in when you attack
+  protect-soldiers-from-owner: true
+  drops-on-death: false          # a fallen soldier drops nothing
+  fight-when-owner-offline: false
+  damage-multiplier: 1.0         # scales every soldier's damage at once
+
+# Who the army may attack. Soldiers never attack their owner, their own soldiers, or anyone the owner
+# has trusted (/legion trust). Other plugins can protect more by cancelling SoldierAttackEvent.
+targets:
+  players: true
+  hostile-mobs: true
+  other-soldiers: true           # armies can fight each other
+  protected-worlds: []           # nobody in these worlds can be attacked, e.g. ["lobby"]
+  spawn-protection:
+    worlds: ["world"]
+    radius: 64                   # nobody within this many blocks of world spawn can be attacked; 0 = off
+
+items:
+  horn-cooldown-millis: 500
+  recipes-enabled: true
+  # Shaped recipes: three rows, letters map to materials below. Change them freely.
+  banner:
+    shape: ["GBG", " S ", " S "]
+    ingredients:
+      G: GOLD_INGOT
+      B: WHITE_BANNER
+      S: STICK
+  horn:
+    shape: ["GIG", "GBG", " G "]
+    ingredients:
+      G: GOLD_INGOT
+      I: IRON_INGOT
+      B: BONE
+
+# What each mob is worth as a soldier. Add or remove entries to change which animals can enlist
+# (the key is the entity type, e.g. RABBIT). Missing fields use the built-in defaults.
+#   damage = hit strength (2 = one heart)   speed = how fast it charges   scale = size (1 = normal)
+#   health = hit points (2 = one heart)     cost  = how many of recruit.cost-item
+soldier-types:
+  RABBIT:  {name: Bunny,    damage: 2.0, speed: 1.5, scale: 0.45, health: 6,  cost: 2}
+  CHICKEN: {name: Chicken,  damage: 1.5, speed: 1.3, scale: 0.5,  health: 6,  cost: 2}
+  CAT:     {name: Cat,      damage: 2.5, speed: 1.5, scale: 0.5,  health: 10, cost: 4}
+  FOX:     {name: Fox,      damage: 3.0, speed: 1.5, scale: 0.5,  health: 10, cost: 4}
+  PIG:     {name: Piglet,   damage: 2.0, speed: 1.2, scale: 0.45, health: 10, cost: 3}
+  SHEEP:   {name: Lamb,     damage: 2.0, speed: 1.2, scale: 0.45, health: 8,  cost: 3}
+  COW:     {name: Calf,     damage: 3.0, speed: 1.1, scale: 0.4,  health: 10, cost: 4}
+  GOAT:    {name: Kid,      damage: 3.5, speed: 1.4, scale: 0.45, health: 10, cost: 6}
+  FROG:    {name: Froglet,  damage: 2.0, speed: 1.4, scale: 0.5,  health: 8,  cost: 3}
+  TURTLE:  {name: Turtle,   damage: 1.5, speed: 1.1, scale: 0.5,  health: 15, cost: 3}

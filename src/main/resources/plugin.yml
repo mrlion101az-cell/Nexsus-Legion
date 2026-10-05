@@ -1,0 +1,29 @@
+name: NexusLegion
+version: ${project.version}
+main: com.nexuscraft.nexuslegion.NexusLegionPlugin
+api-version: '1.21'
+author: Nexus Universe
+description: Build a tiny army of small animals -- bunnies, chickens, cats and more -- and send it after players and monsters with a War Horn.
+
+commands:
+  legion:
+    description: Your tiny animal army -- status, stance, trust, disband.
+    aliases: [army, minilegion]
+    usage: /legion [status|list|stance|rally|attack|trust|untrust|trusted|disband|recipes]
+
+permissions:
+  nexuslegion.use:
+    description: Recruit soldiers and command an army.
+    default: true
+  nexuslegion.admin:
+    description: Give legion items and reload the config.
+    default: op
+  nexuslegion.cap.30:
+    description: Army size limit of 30.
+    default: false
+  nexuslegion.cap.40:
+    description: Army size limit of 40.
+    default: false
+  nexuslegion.cap.60:
+    description: Army size limit of 60.
+    default: false
